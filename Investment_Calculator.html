@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .buttons {
+            width: 220px;
+            margin: 35px auto;
+            position: relative;
+            /* box-shadow: 0 0 20px 9px #ff61241f; */
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .toggle {
+            padding: 15px;
+            width: 110px;
+            cursor: pointer;
+            background: transparent;
+            color: rgb(67, 67, 255);
+            font-weight: 500;
+            border: 0;
+            /* outline: none; */
+            justify-content: space-around;
+            position: relative;
+        }
+
+        #btn {
+            top: 0;
+            left: 0;
+            position: absolute;
+            width: 120px;
+            height: 100%;
+            background: rgb(212, 212, 255,0.4);
+            /*linear-gradient(to right, #ff105f, #ffad06);*/
+            transition: .5s;
+            border-radius: 30px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: transparent;    
+            /* Add the linear gradient */
+            background: linear-gradient(to right, #00b386 0%, #00b386 50%, #d3d3d3 50%);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        /* For Chrome, Safari, and Opera */
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: rgb(67, 67, 255);
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            margin-top: -6px; /* Center the thumb */
+        }
+
+        /* For Firefox */
+        input[type="range"]::-moz-range-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: rgb(67, 67, 255);
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        /* For Internet Explorer */
+        input[type="range"]::-ms-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: transparent;
+            border-color: transparent;
+            color: transparent;
+            border-radius: 10px;
+        }
+
+        input[type="range"]::-ms-fill-lower {
+            background: rgb(67, 67, 255);
+            border-radius: 10px;
+        }
+
+        input[type="range"]::-ms-fill-upper {
+            background: #d3d3d3;
+            border-radius: 10px;
+        }
+
+        input[type="range"]::-ms-thumb {
+            width: 20px;
+            height: 20px;
+            background:rgb(67, 67, 255);
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            margin-top: -6px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="row container-fluid mt-5 justify-content-around">
+        <h2>
+            <center>Investment Calculator</center>
+        </h2>
+        <div class="col-md-5">
+            <div class="container">
+                <div class="buttons">
+                    <div id="btn"></div>
+                    <button type="button" class="toggle" onclick="SIP()">SIP</button>
+                    <button type="button" class="toggle" onclick="Lumpsum()">Lumpsum</button>
+                </div>
+            </div>
+            <div class="container row md-6 mt-5 align-items-center justify-content-between">
+                <span id="invest-type" class="col-md-5">Monthly Investment</span>
+                <div class="input-group col-md-5" style="width: 200px;">
+                    <span id="status-i" class="input-group-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                    <input id="invest" type="number" class="form-control" min="500" max="1000000" value="500"
+                        style="text-align: end;">
+                </div>
+                <div class="col-md-12">
+                    <input type="range" class="form-range" min="500" max="1000000" value="500" step="500"
+                        id="invest-Range">
+                </div>
+            </div>
+            <div class="container row md-6 mt-5 align-items-center justify-content-between">
+                <span class="col-md-5">Expected return rate (p.a)</span>
+                <div class="input-group col-md-5" style="width: 200px;">
+                    <input id="est" type="number" class="form-control" min="1" max="30" value="1"
+                        style="text-align: end;">
+                    <span id="status-i" class="input-group-text"><i class="fa-solid fa-percent"></i></span>
+                </div>
+                <div class="col-md-12">
+                    <input type="range" class="form-range" min="1" max="30" value="1" step="0.1" id="ESt-Range">
+                </div>
+            </div>
+            <div class="container row md-6 mt-5 align-items-center justify-content-between">
+                <span class="col-md-5">Time Period</span>
+                <div class="input-group col-md-5" style="width: 200px;">
+                    <input id="time" class="form-control" max="40" min="1" type="number" placeholder="0" value="1"
+                        style="text-align: end;">
+                    <span id="status-i" class="input-group-text">Yr</span>
+                </div>
+                <div class="col-md-12">
+                    <input type="range" class="form-range" min="1" max="40" value="1" step="1" id="Time_Range">
+                </div>
+            </div>
+            <div class="container row md-6 mt-5 justify-content-between">
+                <Span class="col-md-6 mt-3">Invested Amount</Span>
+                <Span id="Invest_value" class="col-md-6 mt-3">Invested Amount V</Span>
+                <Span class="col-md-6 mt-3">Est. Return</Span>
+                <Span id="Est_value" class="col-md-6 mt-3">Est. V</Span>
+                <Span class="col-md-6 mt-3">Total Value</Span>
+                <Span id="Total_value" class="col-md-6 mt-3">T V</Span>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="container row md-12 mt-5">
+                <div class="col-md-6 d-flex justify-content-center mt-5 align-items-center">
+                    <span style="background-color: rgb(201, 201, 201); width: 20px; height: 10px; border-radius: 35px;" ></span>
+                    <span class="mx-2">Invested Value</span>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center mt-5 align-items-center">
+                    <span style="background-color: rgb(67, 67, 255); width: 20px; height: 10px; border-radius: 35px;"></span>
+                    <span class="mx-2">Est Return</span>
+                </div>
+            </div>
+            <div class="container row md-12 mt-5">
+                <div class="d-flex justify-content-center">
+                    <svg width="220" height="220" id="investmentChart">
+                        <g transform="translate(110,110)">
+                            <path id="investedPath" d="M0,-110A110,110,0,1,1,-110,0L0,0Z" fill="rgb(201, 201, 201)"></path>
+                            <path id="returnPath" d="M-110,0A110,110,0,0,1,0,-110L0,0Z" fill="rgb(67, 67, 255)"></path>
+                            <circle cx="0" cy="0" r="70" fill="white"></circle>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var z = document.getElementById("btn");
+
+        var I_type = 'SIP';
+
+        const timeRange = document.getElementById('Time_Range');
+        const timeInput = document.getElementById('time');
+
+        const EstRange = document.getElementById('ESt-Range');
+        const EstInput = document.getElementById('est');
+
+        const InvestRange = document.getElementById('invest-Range');
+        const InvestInput = document.getElementById('invest');
+
+        //Calculation
+        var t = timeInput.value * 12;
+        var p = InvestInput.value;
+        var Invest_value = InvestInput.value * t;
+        var r = (EstInput.value / 100) / 12;
+        console.log(EstInput.value / 12);
+        var Total = p * (((1 + r) ** t - 1) / r) * (1 + r);
+        var Est_value = Total - Invest_value;
+        console.log((1 + r) ** t);
+        document.getElementById('Invest_value').innerHTML = Invest_value;
+        document.getElementById('Est_value').innerHTML = Math.round(Est_value);
+        document.getElementById('Total_value').innerHTML = Math.round(Total);
+
+        function updateSVG(investedValue, returnValue) {
+            const totalValue = investedValue + returnValue;
+            const investedPercentage = investedValue / totalValue;
+            const returnPercentage = returnValue / totalValue;
+
+            // Ensure we handle the case where one of the values is zero
+            const investedEndAngle = investedPercentage * 360;
+            const returnEndAngle = investedEndAngle + returnPercentage * 360;
+
+            // Draw the paths
+            const investedPath = document.getElementById('investedPath');
+            const returnPath = document.getElementById('returnPath');
+            
+
+            investedPath.setAttribute('d', describeArc(0, 0, 110, 0, investedEndAngle));
+            returnPath.setAttribute('d', describeArc(0, 0, 110, investedEndAngle, 360));
+        }
+
+        // Utility function to describe an arc
+        function describeArc(x, y, radius, startAngle, endAngle) {
+            const start = polarToCartesian(x, y, radius, endAngle);
+            const end = polarToCartesian(x, y, radius, startAngle);
+
+            const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+
+            const d = [
+                "M", start.x, start.y,
+                "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y,
+                "L", x, y,
+                "Z"
+            ].join(" ");
+
+            return d;
+        }
+
+        // Utility function to convert polar coordinates to Cartesian coordinates
+        function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+            const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+
+            return {
+                x: centerX + (radius * Math.cos(angleInRadians)),
+                y: centerY + (radius * Math.sin(angleInRadians))
+            };
+        }
+
+        // Update the SVG
+        updateSVG(Invest_value, Est_value);
+
+        function SIP() {
+            document.getElementById('invest-type').innerHTML = 'Monthly Investment';
+            const InvestRange = document.getElementById('invest-Range');
+            I_type = 'SIP';
+
+            // Set the maximum value for SIP
+            InvestRange.max = 1000000;
+            InvestRange.min = 500;
+            InvestRange.step = 500;
+            InvestRange.value = Math.min(InvestRange.value, InvestRange.max);
+            InvestRange.value = InvestRange.value;
+
+            //Calculation
+            var t = timeInput.value * 12;
+            var p = InvestInput.value;
+            var Invest_value = InvestInput.value * t;
+            var r = (EstInput.value / 100) / 12;
+            console.log(EstInput.value / 12);
+            var Total = p * (((1 + r) ** t - 1) / r) * (1 + r);
+            var Est_value = Total - Invest_value;
+            console.log((1 + r) ** t);
+            document.getElementById('Invest_value').innerHTML = Invest_value;
+            document.getElementById('Est_value').innerHTML = Math.round(Est_value);
+            document.getElementById('Total_value').innerHTML = Math.round(Total);
+
+            //Update Range bar
+            updateSliderBackground(InvestRange);
+            updateSliderBackground(EstRange);
+            updateSliderBackground(timeRange);
+
+            // Update the SVG
+            updateSVG(Invest_value, Est_value);
+
+            // Animation
+            z.style.left = "0px"
+        }
+
+        function Lumpsum() {
+            document.getElementById('invest-type').innerHTML = 'Total Investment';
+            I_type = 'Lumpsum';
+
+            // Set the maximum value for Lumpsum
+            InvestRange.max = 10000000;
+            InvestRange.min = 500;
+            InvestRange.step = 500;
+            InvestRange.value = Math.min(InvestRange.value, InvestRange.max);
+            InvestRange.value = InvestRange.value;
+
+            // Calculation for Lumpsum
+            var investedValue = parseFloat(InvestInput.value);
+            var totalValue = investedValue * Math.pow((1 + parseFloat(EstInput.value) / 100), parseFloat(timeInput.value));
+            var estValue = totalValue - investedValue;
+
+            document.getElementById('Invest_value').innerHTML = investedValue;
+            document.getElementById('Est_value').innerHTML = Math.round(estValue);
+            document.getElementById('Total_value').innerHTML = Math.round(totalValue);
+
+            //Update Range bar
+            updateSliderBackground(InvestRange);
+            updateSliderBackground(EstRange);
+            updateSliderBackground(timeRange);
+
+            // Update the SVG
+            updateSVG(investedValue, estValue);
+
+            // Animation
+            z.style.left = "110px";
+        }
+
+
+        InvestInput.addEventListener('input',function () {
+            if (I_type === 'SIP') {
+                if(InvestInput.value < 500){
+                    InvestInput.value = 500;
+                    InvestRange.value = InvestInput.value;
+                    calculateSIP();
+                    updateSliderBackground(InvestRange);
+                }else if(InvestInput.value > 1000000){
+                    InvestInput.value = 1000000;
+                    InvestRange.value = InvestInput.value;
+                    calculateSIP();
+                    updateSliderBackground(InvestRange);   
+                }else{
+                    InvestRange.value = InvestInput.value;
+                    calculateSIP();
+                    updateSliderBackground(InvestRange);
+                }
+            }
+            if (I_type === 'Lumpsum') {
+                if(InvestInput.value < 500){
+                    InvestInput.value = 500;
+                    InvestRange.value = InvestInput.value;
+                    calculateLumpsum();
+                    updateSliderBackground(InvestRange);
+                }else if(InvestInput.value > 10000000){
+                    InvestInput.value = 10000000;
+                    InvestRange.value = InvestInput.value;
+                    calculateLumpsum();
+                    updateSliderBackground(InvestRange);   
+                }else{
+                    InvestRange.value = InvestInput.value;
+                    calculateLumpsum();
+                    updateSliderBackground(InvestRange);
+                }
+            }
+        })
+
+        EstInput.addEventListener('input',function () {
+            if (I_type === 'SIP') {
+                if(EstInput.value < 1){
+                    EstInput.value = 1;
+                    EstRange.value = EstInput.value;
+                    calculateSIP();
+                    updateSliderBackground(EstRange);
+                }else if(EstInput.value > 30){
+                    EstInput.value = 30;
+                    EstRange.value = EstInput.value;
+                    calculateSIP();
+                    updateSliderBackground(EstRange);   
+                }else{
+                    EstRange.value = EstInput.value;
+                    calculateSIP();
+                    updateSliderBackground(EstRange);
+                }
+            }
+            if (I_type === 'Lumpsum') {
+                if(EstInput.value < 1){
+                    EstInput.value = 1;
+                    EstRange.value = EstInput.value;
+                    calculateLumpsum();
+                    updateSliderBackground(EstRange);
+                }else if(EstInput.value > 30){
+                    EstInput.value = 30;
+                    EstRange.value = EstInput.value;
+                    calculateLumpsum();
+                    updateSliderBackground(EstRange);   
+                }else{
+                    EstRange.value = EstInput.value;
+                    calculateLumpsum();
+                    updateSliderBackground(EstRange);
+                }
+            }
+        })
+
+        timeInput.addEventListener('input',function () {
+            if (I_type === 'SIP') {
+                if(timeInput.value < 1){
+                    timeInput.value = 1;
+                    timeRange.value = timeInput.value;
+                    calculateSIP();
+                    updateSliderBackground(timeRange);
+                }else if(timeInput.value > 40){
+                    timeInput.value = 40;
+                    timeRange.value = timeInput.value;
+                    calculateSIP();
+                    updateSliderBackground(timeRange);   
+                }else{
+                    timeRange.value = timeInput.value;
+                    calculateSIP();
+                    updateSliderBackground(timeRange);
+                }
+            }
+            if (I_type === 'Lumpsum') {
+                if(timeInput.value < 1){
+                    timeInput.value = 1;
+                    timeRange.value = timeInput.value;
+                    calculateLumpsum();
+                    updateSliderBackground(timeRange);
+                }else if(timeInput.value > 40){
+                    timeInput.value = 40;
+                    timeRange.value = timeInput.value;
+                    calculateLumpsum();
+                    updateSliderBackground(timeRange);   
+                }else{
+                    timeRange.value = timeInput.value;
+                    calculateLumpsum();
+                    updateSliderBackground(timeRange);
+                }
+            }
+        })
+
+        timeRange.addEventListener('input', function () {
+            timeInput.value = timeRange.value;
+            if (I_type === 'SIP') {
+                calculateSIP();
+                updateSliderBackground(timeRange);
+            }
+            if (I_type === 'Lumpsum') {
+                calculateLumpsum();
+                updateSliderBackground(timeRange);
+            }
+            });
+
+        EstRange.addEventListener('input', function () {
+            EstInput.value = EstRange.value;
+            if (I_type === 'SIP') {
+                calculateSIP();
+                updateSliderBackground(EstRange);
+            }
+            if (I_type === 'Lumpsum') {
+                calculateLumpsum();
+                updateSliderBackground(EstRange);
+            }
+        });
+
+        InvestRange.addEventListener('input', function () {
+            InvestInput.value = InvestRange.value;
+            if (I_type === 'SIP') {
+                calculateSIP();
+                updateSliderBackground(InvestRange);
+            }
+            if (I_type === 'Lumpsum') {
+                calculateLumpsum();
+                updateSliderBackground(InvestRange);
+            }
+        });
+
+        function updateSliderBackground(slider) {
+            const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.background = `linear-gradient(to right, rgb(67, 67, 255) ${value}%, #d3d3d3 ${value}%)`;
+        }
+
+        function calculateSIP() {
+            var t = timeInput.value * 12;
+            var p = parseFloat(InvestInput.value);
+            var investValue = p * t;
+            var r = (parseFloat(EstInput.value) / 100) / 12;
+            var total = p * (((1 + r) ** t - 1) / r) * (1 + r);
+            var estValue = total - investValue;
+
+            document.getElementById('Invest_value').innerHTML = investValue;
+            document.getElementById('Est_value').innerHTML = Math.round(estValue);
+            document.getElementById('Total_value').innerHTML = Math.round(total);
+
+            updateSVG(investValue, estValue);
+        }
+
+        function calculateLumpsum() {
+            var investValue = parseFloat(InvestInput.value);
+            var totalValue = investValue * Math.pow((1 + parseFloat(EstInput.value) / 100), parseFloat(timeInput.value));
+            var estValue = totalValue - investValue;
+
+            document.getElementById('Invest_value').innerHTML = investValue;
+            document.getElementById('Est_value').innerHTML = Math.round(estValue);
+            document.getElementById('Total_value').innerHTML = Math.round(totalValue);
+
+            updateSVG(investValue, estValue);
+        }
+
+        updateSliderBackground(InvestRange);
+        updateSliderBackground(EstRange);
+        updateSliderBackground(timeRange);
+    </script>
+</body>
+
+</html>
